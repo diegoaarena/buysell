@@ -1,3 +1,4 @@
+const Rx = require('rxjs/Rx');
 const buysell = require('../buysell');
 
 describe('buysell', () => {
@@ -30,23 +31,43 @@ describe('buysell', () => {
     ]
 
     it('dynamic should pass all the test cases', () => {
-        for(let testcase of testcases) {
+        for (let testcase of testcases) {
             let result = buysell.dynamic(testcase.input);
             expect(result).toEqual(testcase.output);
         }
     });
 
     it('bruteforce should pass all the test cases', () => {
-        for(let testcase of testcases) {
+        for (let testcase of testcases) {
             let result = buysell.bruteforce(testcase.input);
             expect(result).toEqual(testcase.output);
         }
     });
 
+    it('fp method should work!', done => {
+        let source = Rx.Observable.from(testcases[3].input).reduce((acc, price, index) => {
+            if (price < acc.minPrice) {
+                acc.min = index;
+                acc.minPrice = price;
+            }
+            else if (price - acc.minPrice > acc.bestProfit) {
+                acc.buy = acc.min;
+                acc.sell = index;
+                acc.bestProfit = price - acc.minPrice;
+            }
+
+            return acc;
+        }, { buy: 0, sell: 0, min: 0, minPrice: 0, bestProfit: 0 });
+
+        source.map(result => [result.buy, result.sell]).subscribe(output => {
+            expect(output).toEqual(testcases[3].output);
+        }, error => console.log, () => done());
+    });
+
     let runTests = method => {
         let start = process.hrtime();
         for (let i = 0; i < 1000000; i++) {
-            for(let testcase of testcases) {
+            for (let testcase of testcases) {
                 method(testcase.input);
             }
         }
