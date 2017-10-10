@@ -1,3 +1,5 @@
+const Rx = require('rxjs/Rx');
+
 function bruteforce(prices) {
     let buy = 0;
     let sell = 0;
@@ -23,17 +25,18 @@ function fp(prices) {
     let sell = 0;
     let min = 0;
     let bestProfit = 0;
-    prices.map((value, i) => {
-        if (value < prices[min]) {
+   
+    return Rx.Observable.from(prices).map(price => {
+        if (price < prices[min]) {
             min = i;
         }
-        else if (value - prices[min] > bestProfit) {
+        else if (price - prices[min] > bestProfit) {
             buy = min;
             sell = i;
-            bestProfit = value - prices[min];
+            bestProfit = price - prices[min];
         }
+        return [buy, sell]
     });
-    return [buy, sell];
 }
 
 function dynamic(prices) {

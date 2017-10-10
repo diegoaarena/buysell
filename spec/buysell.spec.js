@@ -1,3 +1,4 @@
+const Rx = require('rxjs/Rx');
 const buysell = require('../buysell');
 
 describe('buysell', () => {
@@ -45,8 +46,9 @@ describe('buysell', () => {
 
     it('fp should pass all the test cases', () => {
         for(let testcase of testcases) {
-            let result = buysell.fp(testcase.input);
-            expect(result).toEqual(testcase.output);
+            buysell.fp(testcase.input).last(result => {
+                expect(result).toEqual(testcase.output);
+            });
         }
     });
 
@@ -54,7 +56,7 @@ describe('buysell', () => {
         let start = process.hrtime();
         for (let i = 0; i < 1000000; i++) {
             for(let testcase of testcases) {
-                let result = method(testcase.input);
+                method(testcase.input);
             }
         }
         let elapsed = process.hrtime(start)[1] / 1000000;
