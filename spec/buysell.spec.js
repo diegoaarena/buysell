@@ -1,4 +1,4 @@
-buysell = require('../buysell');
+const buysell = require('../buysell');
 
 describe('buysell', () => {
 
@@ -22,6 +22,10 @@ describe('buysell', () => {
         {
             input: [2, 5, 1, 3, 5],
             output: [2, 4]
+        },
+        {
+            input: [1, 5, 1, 5, 1, 5],
+            output: [0, 1]
         }
     ]
 
@@ -37,5 +41,29 @@ describe('buysell', () => {
             let result = buysell.bruteforce(testcase.input);
             expect(result).toEqual(testcase.output);
         }
+    });
+
+    it('fp should pass all the test cases', () => {
+        for(let testcase of testcases) {
+            let result = buysell.fp(testcase.input);
+            expect(result).toEqual(testcase.output);
+        }
+    });
+
+    let runTests = method => {
+        let start = process.hrtime();
+        for (let i = 0; i < 1000000; i++) {
+            for(let testcase of testcases) {
+                let result = method(testcase.input);
+            }
+        }
+        let elapsed = process.hrtime(start)[1] / 1000000;
+        console.log(method.name, process.hrtime(start)[0] + ' s, ' + elapsed.toFixed(3) + ' ms');
+    };
+
+    it('method timing', () => {
+        runTests(buysell.bruteforce);
+        runTests(buysell.dynamic);
+        runTests(buysell.fp);
     });
 });
