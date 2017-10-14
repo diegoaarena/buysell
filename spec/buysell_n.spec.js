@@ -8,7 +8,7 @@ describe('buysell n times', () => {
     const testcases = [
         {
             input: [[1, 2, 1, 2, 3, 2, 3, 2], 4],
-            output: 4
+            output: { trades: [ [ 0, 0 ], [ 0, 1 ], [ 2, 4 ], [ 5, 6 ] ], value: 4 }
         }
     ]
 

@@ -9,13 +9,14 @@ function bruteforce(prices, n) {
         T[i] = Array(prices.length).fill({ trades: Array.from(emptyTrades), value: 0 });
     }
 
+
     for (let i = 1; i < n + 1; i++) {
         for (let j = 1; j < prices.length; j++) {
             let maxVal = { trades: Array.from(T[i][0].trades), value: 0 };
             for (let m = 0; m < j; m++) {
                 if (prices[j] - prices[m] + T[i - 1][m].value > maxVal.value) {
                     maxVal.trades.length = 0;
-                    maxVal.trades.push(T[i-1][m].trades);
+                    maxVal.trades.push(...T[i-1][m].trades);
                     maxVal.trades.push([m, j]);
                     maxVal.value = prices[j] - prices[m] + T[i - 1][m].value;
                 }
@@ -24,8 +25,8 @@ function bruteforce(prices, n) {
         }
     }
 
-    console.log(T);
-    console.log(T[n][prices.length - 1]);
+    //console.log(T);
+    //console.log(T[n][prices.length - 1]);
     return T[n][prices.length - 1];
 }
 
