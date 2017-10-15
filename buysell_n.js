@@ -14,11 +14,12 @@ function bruteforce(prices, n) {
         for (let j = 1; j < prices.length; j++) {
             let maxVal = { trades: Array.from(T[i][0].trades), value: 0 };
             for (let m = 0; m < j; m++) {
-                if (prices[j] - prices[m] + T[i - 1][m].value > maxVal.value) {
+                let thisProfit = prices[j] - prices[m] + T[i - 1][m].value;
+                if (thisProfit > maxVal.value) {
                     maxVal.trades.length = 0;
                     maxVal.trades.push(...T[i-1][m].trades);
                     maxVal.trades.push([m, j]);
-                    maxVal.value = prices[j] - prices[m] + T[i - 1][m].value;
+                    maxVal.value = thisProfit;
                 }
             }
             T[i][j] = (maxVal.value > T[i][j-1].value)? maxVal : T[i][j-1];
