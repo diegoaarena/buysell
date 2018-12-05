@@ -17,28 +17,39 @@ describe('buysell n times', () => {
             output: { trades: [0, 4, 5], profit: 3 }
         },
         {
+            input: [[4, 3, 2, 1], 4],
+            output: { trades: [0, 0, 0, 0], profit: 0 }
+        },
+        {
             input: [[1, 1, 1, 5, 6, 7], 3],
             output: { trades: [0, 0, 0], profit: -1 }
+        },
+        // examples in the interview zen question itself
+        {
+            input: [[1, 2, 3], 4],
+            output: { trades: [0, 0, 0, 2], profit: 2 }
+        },
+        {
+            input: [[1, 12, 3, 5], 4],
+            output: { trades: [0, 1, 2, 3], profit: 13 }
         }
     ];
 
-    it('bruteforce should pass all the test cases', () => {
-        for (let testcase of testcases) {
-            let result = buysell.bruteforce(...testcase.input);
-            expect(result).toEqual(testcase.output);
-        }
+    describe('bruteforce matrix method', () => {
+        testcases.forEach(testcase => {
+            it(`should pass when input is ${JSON.stringify(testcase.input[0])} with ${testcase.input[1]} trades`, () => {
+                let result = buysell.bruteforce(...testcase.input);
+                expect(result).toEqual(testcase.output);
+            });
+        });
     });
 
-    describe('bruteforceLoops', () => {
-        it('should actually terminate', () => {
-            expect(() => buysell.bruteforceLoops([1, 1, 1, 5, 6, 7], 3)).not.toThrow();
-        });
-
-        it('should pass all the test cases', () => {
-            for (let testcase of testcases) {
+    describe('bruteforce loop method', () => {
+        testcases.forEach(testcase => {
+            it(`should pass when input is ${JSON.stringify(testcase.input[0])} with ${testcase.input[1]} trades`, () => {
                 let result = buysell.bruteforceLoops(...testcase.input);
                 expect(result).toEqual(testcase.output);
-            }
+            });
         });
     });
 

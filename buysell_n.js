@@ -24,7 +24,7 @@ function bruteforce(prices, n) {
             // if we buy/sell today then we must check the max
             // of each day where we've transacted only (i-1) times.
 
-            let maxVal = { trades: Array.from(T[i][0].trades), profit: T[i][0].value };
+            let maxVal = { trades: Array.from(T[i][0].trades), profit: T[i][0].profit };
             for (let m = 0; m < j; m++) {
                 let trades = Array.from(T[i - 1][m].trades);
                 trades.push(j);
@@ -110,7 +110,7 @@ function bruteforceLoops(prices, n) {
             };
         }
 
-        if (isDone(indices, n)) {
+        if (isDone(indices, prices.length - 1)) {
             break;
         } else {
             indices = ltorIncrement(indices, prices.length - 1);
