@@ -37,5 +37,7 @@ function dynamic(prices) {
     return  [buy, sell];
 }
 
-module.exports.dynamic = dynamic;
-module.exports.bruteforce = bruteforce;
+module.exports = {
+    dynamic,
+    bruteforce
+}
